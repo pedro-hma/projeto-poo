@@ -1,12 +1,13 @@
-public class Jogo {
-    private Baralho baralho;
-    private Jogador jogador;
-    private Jogador dealer;
+import java.util.Scanner;
+public class jogo {
+    private deck baralho;
+    private jogador jogador;
+    private jogador dealer;
 
-    public Jogo() {
-        this.baralho = new Baralho();
-        this.jogador = new Jogador();
-        this.dealer = new Jogador();
+    public jogo() {
+        this.baralho = new deck();
+        this.jogador = new jogador();
+        this.dealer = new jogador();
     }
 
     public void iniciar() {
@@ -54,7 +55,7 @@ public class Jogo {
     }
 
     public static void main(String[] args) {
-        Jogo jogo = new Jogo();
+        jogo jogo = new jogo();
         jogo.iniciar();
     }
 }
