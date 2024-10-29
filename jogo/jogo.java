@@ -1,4 +1,5 @@
 import java.util.Scanner;
+
 public class jogo {
     private deck baralho;
     private jogador jogador;
@@ -21,16 +22,18 @@ public class jogo {
         System.out.println("Mão do jogador: " + jogador.mostrarMao());
         System.out.println("Mão do dealer: [Carta Oculta, " + dealer.mao.get(1) + "]");
 
-        while (jogador.calcularPontuacao() < 21) {
-            System.out.println("Deseja 'Puxar' ou 'Parar'? ");
-            Scanner scanner = new Scanner(System.in);
-            String acao = scanner.nextLine();
+        // Usar try-with-resources para garantir que o Scanner seja fechado automaticamente
+        try (Scanner scanner = new Scanner(System.in)) {
+            while (jogador.calcularPontuacao() < 21) {
+                System.out.println("Deseja 'Puxar' ou 'Parar'? ");
+                String acao = scanner.nextLine();
 
-            if (acao.equalsIgnoreCase("Puxar")) {
-                jogador.puxarCarta(baralho.puxarCarta());
-                System.out.println("Mão do jogador: " + jogador.mostrarMao());
-            } else {
-                break;
+                if (acao.equalsIgnoreCase("Puxar")) {
+                    jogador.puxarCarta(baralho.puxarCarta());
+                    System.out.println("Mão do jogador: " + jogador.mostrarMao());
+                } else {
+                    break;
+                }
             }
         }
 
@@ -38,16 +41,16 @@ public class jogo {
     }
 
     private void verificarVencedor() {
-        int pontuacaoJogador = jogador.calcularPontuacao();
+        int pontuacaojogador = jogador.calcularPontuacao();
         int pontuacaoDealer = dealer.calcularPontuacao();
 
         System.out.println("Mão do dealer: " + dealer.mostrarMao());
 
-        if (pontuacaoJogador > 21) {
+        if (pontuacaojogador > 21) {
             System.out.println("Você estourou! Dealer venceu.");
-        } else if (pontuacaoDealer > 21 || pontuacaoJogador > pontuacaoDealer) {
+        } else if (pontuacaoDealer > 21 || pontuacaojogador > pontuacaoDealer) {
             System.out.println("Você venceu!");
-        } else if (pontuacaoJogador < pontuacaoDealer) {
+        } else if (pontuacaojogador < pontuacaoDealer) {
             System.out.println("Dealer venceu.");
         } else {
             System.out.println("Empate!");
