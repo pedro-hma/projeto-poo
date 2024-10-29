@@ -1,13 +1,13 @@
 import java.util.*;
 
 public class jogador {
-    protected List<Carta> mao;
+    protected List<carta> mao;
 
-    public Jogador() {
+    public jogador() {
         this.mao = new ArrayList<>();
     }
 
-    public void puxarCarta(Carta carta) {
+    public void puxarCarta(carta carta) {
         mao.add(carta);
     }
 
@@ -15,7 +15,7 @@ public class jogador {
         int soma = 0;
         int ases = 0;
 
-        for (Carta carta : mao) {
+        for (carta carta : mao) {
             soma += carta.getValor();
             if (carta.getValor() == 1) ases++;
         }
