@@ -1,7 +1,7 @@
 public class conta {
     private double saldo;
 
-    public Conta(double saldoInicial) {
+    public conta(double saldoInicial) {
         this.saldo = saldoInicial;
     }
 
