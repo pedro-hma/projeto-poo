@@ -173,7 +173,8 @@ public class Jogo {
     public void iniciar() {
         System.out.println("Bem-vindo ao Blackjack! Seu saldo atual é: " + contaJogador.getSaldo());
         
-        Scanner scanner = new Scanner(System.in);
+        @SuppressWarnings("resource")
+Scanner scanner = new Scanner(System.in);
         System.out.println("Quanto você gostaria de apostar? ");
         double aposta = scanner.nextDouble();
 
