@@ -114,7 +114,7 @@ class Jogador {
 class Dealer extends Jogador {
 
     public boolean tomarDecisao(int pontuacaoJogador) {
-        int pontuacaoDealer = this.calcularPontuacao();
+        int pontuacaoDealer = calcularPontuacao();  // Corrigido: Chamando diretamente o método calcularPontuacao()
 
         if (pontuacaoDealer < 17) {
             return true; // Dealer puxa carta com pontuação menor que 17
