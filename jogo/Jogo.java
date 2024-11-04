@@ -1,180 +1,24 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Scanner;
-import java.io.FileWriter;
-import java.io.IOException;
 
-// Classe Carta
-class Carta {
-    private int valor;
-    private String naipe;
-
-    public Carta(int valor, String naipe) {
-        this.valor = valor > 10 ? 10 : valor; // Limita o valor máximo a 10 (valetes, damas e reis)
-        this.naipe = naipe;
-    }
-
-    public int getValor() {
-        return valor;
-    }
-
-    @Override
-    public String toString() {
-        return valor + " de " + naipe;
-    }
-}
-
-// Classe Baralho
-class Baralho {
-    private List<Carta> cartas;
-
-    public Baralho() {
-        cartas = new ArrayList<>();
-        String[] naipes = {"Copas", "Espadas", "Ouros", "Paus"};
-        for (String naipe : naipes) {
-            for (int valor = 1; valor <= 13; valor++) {
-                cartas.add(new Carta(valor, naipe));
-            }
-        }
-        Collections.shuffle(cartas);
-    }
-
-    public Carta puxarCarta() {
-        return cartas.remove(0);
-    }
-}
-
-// Classe Conta para gerenciar o saldo e apostas
-class Conta {
-    private double saldo;
-
-    public Conta(double saldoInicial) {
-        this.saldo = saldoInicial;
-    }
-
-    public boolean apostar(double valor) {
-        if (valor <= saldo) {
-            saldo -= valor;
-            return true;
-        }
-        System.out.println("Saldo insuficiente!");
-        return false;
-    }
-
-    public void ganharAposta(double valor) {
-        saldo += valor;
-    }
-
-    public double getSaldo() {
-        return saldo;
-    }
-
-    @Override
-    public String toString() {
-        return "Saldo atual: $" + saldo;
-    }
-}
-
-// Classe Jogador para gerenciar a mão e pontuação
-class Jogador {
-    protected List<Carta> mao;
-
-    public Jogador() {
-        mao = new ArrayList<>();
-    }
-
-    public void puxarCarta(Carta carta) {
-        mao.add(carta);
-    }
-
-    public int calcularPontuacao() {
-        int soma = 0;
-        int ases = 0;
-
-        for (Carta carta : mao) {
-            soma += carta.getValor();
-            if (carta.getValor() == 1) ases++;  // Conta Ases
-        }
-
-        while (ases > 0 && soma + 10 <= 21) {
-            soma += 10;
-            ases--;
-        }
-
-        return soma;
-    }
-
-    public String mostrarMao() {
-        return mao.toString();
-    }
-}
-
-// Classe Dealer, com IA para decisões
-class Dealer extends Jogador {
-
-    public boolean tomarDecisao(int pontuacaoJogador) {
-        int pontuacaoDealer = calcularPontuacao();  // Corrigido: Chamando diretamente o método calcularPontuacao()
-
-        if (pontuacaoDealer < 17) {
-            return true; // Dealer puxa carta com pontuação menor que 17
-        } else if (pontuacaoDealer < pontuacaoJogador && pontuacaoJogador <= 21) {
-            return true; // Dealer puxa se o jogador tem pontuação mais alta e ainda não estourou
-        }
-        return false; // Dealer para de puxar cartas
-    }
-}
-
-// Classe Historico para armazenar os resultados
-class Historico {
-    private List<String> resultados;
-
-    public Historico() {
-        this.resultados = new ArrayList<>();
-    }
-
-    public void registrarResultado(String resultado) {
-        resultados.add(resultado);
-        salvarNoArquivo(resultado);
-    }
-
-    private void salvarNoArquivo(String resultado) {
-        try (FileWriter writer = new FileWriter("historico.txt", true)) {
-            writer.write(resultado + "\n");
-        } catch (IOException e) {
-            System.out.println("Erro ao salvar o histórico: " + e.getMessage());
-        }
-    }
-
-    public void exibirHistorico() {
-        System.out.println("Histórico de Partidas:");
-        for (String resultado : resultados) {
-            System.out.println(resultado);
-        }
-    }
-}
-
-// Classe principal do Jogo
 public class Jogo {
-    private Baralho baralho;
-    private Jogador jogador;
+    private deck baralho;
+    private jogador jogador;
     private Dealer dealer;
-    private Conta contaJogador;
+    private conta contaJogador;
     private Historico historico;
 
     public Jogo(double saldoInicial) {
-        this.baralho = new Baralho();
-        this.jogador = new Jogador();
+        this.baralho = new deck();
+        this.jogador = new jogador();
         this.dealer = new Dealer();
-        this.contaJogador = new Conta(saldoInicial);
+        this.contaJogador = new conta(saldoInicial);
         this.historico = new Historico();
     }
 
     public void iniciar() {
         System.out.println("Bem-vindo ao Blackjack! Seu saldo atual é: " + contaJogador.getSaldo());
         
-        @SuppressWarnings("resource")
-Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         System.out.println("Quanto você gostaria de apostar? ");
         double aposta = scanner.nextDouble();
 

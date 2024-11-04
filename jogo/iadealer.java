@@ -1,5 +1,5 @@
 // Classe Dealer, com IA para decisões
-class Dealer extends Jogador {
+class Dealer extends jogador {
 
     public boolean tomarDecisao(int pontuacaoJogador) {
         int pontuacaoDealer = calcularPontuacao();  // Corrigido: Chamando diretamente o método calcularPontuacao()
